@@ -1,0 +1,29 @@
+From e7628979b0f2b2945acf0dde59fe5194cd7f8129 Mon Sep 17 00:00:00 2001
+From: albertd <albert@dahan.nl>
+Date: Fri, 25 Apr 2014 14:14:02 +0200
+Subject: [PATCH] Remove python bz2 module dependency
+
+---
+ chromium/v8/tools/js2c.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/chromium/v8/tools/js2c.py b/chromium/v8/tools/js2c.py
+index f67d053..cb9653f 100755
+--- a/chromium/v8/tools/js2c.py
++++ b/chromium/v8/tools/js2c.py
+@@ -33,7 +33,6 @@
+ 
+ import os, re, sys, string
+ import jsmin
+-import bz2
+ 
+ 
+ def ToCAsciiArray(lines):
+@@ -380,6 +379,7 @@ def JS2C(source, target, env):
+   else:
+     raw_sources_declaration = RAW_SOURCES_COMPRESSION_DECLARATION
+     if env['COMPRESSION'] == 'bz2':
++      import bz2
+       all_sources = bz2.compress("".join(all_sources))
+     total_length = len(all_sources)
+     sources_data = ToCArray(all_sources)

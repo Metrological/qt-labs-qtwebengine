@@ -1,0 +1,26 @@
+From 04ad7d41bd3ae1af8c129a3a2ab9115fb0d77a8b Mon Sep 17 00:00:00 2001
+From: albertd <albert@dahan.nl>
+Date: Fri, 25 Apr 2014 14:29:34 +0200
+Subject: [PATCH] Make arm neon optional
+
+---
+ chromium/build/common.gypi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/chromium/build/common.gypi b/chromium/build/common.gypi
+index e975a96..0057744 100644
+--- a/chromium/build/common.gypi
++++ b/chromium/build/common.gypi
+@@ -283,10 +283,10 @@
+       'python_ver%': '2.6',
+ 
+       # Set NEON compilation flags.
+-      'arm_neon%': 1,
++      'arm_neon%': 0,
+ 
+       # Detect NEON support at run-time.
+-      'arm_neon_optional%': 0,
++      'arm_neon_optional%': 1,
+ 
+       # The system root for cross-compiles. Default: none.
+       'sysroot%': '',

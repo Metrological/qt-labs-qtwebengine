@@ -1,0 +1,225 @@
+From e989ae5a185f1901d538ae7c5491ffc5063958ea Mon Sep 17 00:00:00 2001
+From: albertd <albert@dahan.nl>
+Date: Fri, 25 Apr 2014 14:28:52 +0200
+Subject: [PATCH] Remove x11 dependency if use_x11 is not set
+
+---
+ chromium/build/linux/system.gyp | 184 ++++++++++++++++++++++------------------
+ 1 file changed, 100 insertions(+), 84 deletions(-)
+
+diff --git a/chromium/build/linux/system.gyp b/chromium/build/linux/system.gyp
+index 92c7480..cbf69fe 100644
+--- a/chromium/build/linux/system.gyp
++++ b/chromium/build/linux/system.gyp
+@@ -787,34 +787,38 @@
+       'type': 'none',
+       'toolsets': ['host', 'target'],
+       'conditions': [
+-        ['_toolset=="target"', {
+-          'direct_dependent_settings': {
+-            'cflags': [
+-              '<!@(<(pkg-config) --cflags x11)',
+-            ],
+-          },
+-          'link_settings': {
+-            'ldflags': [
+-              '<!@(<(pkg-config) --libs-only-L --libs-only-other x11 xi)',
+-            ],
+-            'libraries': [
+-              '<!@(<(pkg-config) --libs-only-l x11 xi)',
+-            ],
+-          },
+-        }, {
+-          'direct_dependent_settings': {
+-            'cflags': [
+-              '<!@(pkg-config --cflags x11)',
+-            ],
+-          },
+-          'link_settings': {
+-            'ldflags': [
+-              '<!@(pkg-config --libs-only-L --libs-only-other x11 xi)',
+-            ],
+-            'libraries': [
+-              '<!@(pkg-config --libs-only-l x11 xi)',
+-            ],
+-          },
++        ['use_x11==1', {
++          'conditions': [
++            ['_toolset=="target"', {
++              'direct_dependent_settings': {
++                'cflags': [
++                  '<!@(<(pkg-config) --cflags x11)',
++                ],
++              },
++              'link_settings': {
++                'ldflags': [
++                  '<!@(<(pkg-config) --libs-only-L --libs-only-other x11 xi)',
++                ],
++                'libraries': [
++                  '<!@(<(pkg-config) --libs-only-l x11 xi)',
++                ],
++              },
++            }, {
++              'direct_dependent_settings': {
++                'cflags': [
++                  '<!@(pkg-config --cflags x11)',
++                ],
++              },
++              'link_settings': {
++                'ldflags': [
++                  '<!@(pkg-config --libs-only-L --libs-only-other x11 xi)',
++                ],
++                'libraries': [
++                  '<!@(pkg-config --libs-only-l x11 xi)',
++                ],
++              },
++            }],
++          ],
+         }],
+       ],
+     },
+@@ -822,20 +826,24 @@
+       'target_name': 'xext',
+       'type': 'none',
+       'conditions': [
+-        ['_toolset=="target"', {
+-          'direct_dependent_settings': {
+-            'cflags': [
+-              '<!@(<(pkg-config) --cflags xext)',
+-            ],
+-          },
+-          'link_settings': {
+-            'ldflags': [
+-              '<!@(<(pkg-config) --libs-only-L --libs-only-other xext)',
+-            ],
+-            'libraries': [
+-              '<!@(<(pkg-config) --libs-only-l xext)',
+-            ],
+-          },
++        ['use_x11==1', {
++          'conditions': [
++            ['_toolset=="target"', {
++              'direct_dependent_settings': {
++                'cflags': [
++                  '<!@(<(pkg-config) --cflags xext)',
++                ],
++              },
++              'link_settings': {
++                'ldflags': [
++                  '<!@(<(pkg-config) --libs-only-L --libs-only-other xext)',
++                ],
++                'libraries': [
++                  '<!@(<(pkg-config) --libs-only-l xext)',
++                ],
++              },
++            }],
++          ],
+         }],
+       ],
+     },
+@@ -843,20 +851,24 @@
+       'target_name': 'xfixes',
+       'type': 'none',
+       'conditions': [
+-        ['_toolset=="target"', {
+-          'direct_dependent_settings': {
+-            'cflags': [
+-              '<!@(<(pkg-config) --cflags xfixes)',
+-            ],
+-          },
+-          'link_settings': {
+-            'ldflags': [
+-              '<!@(<(pkg-config) --libs-only-L --libs-only-other xfixes)',
+-            ],
+-            'libraries': [
+-              '<!@(<(pkg-config) --libs-only-l xfixes)',
+-            ],
+-          },
++        ['use_x11==1', {
++          'conditions': [
++            ['_toolset=="target"', {
++              'direct_dependent_settings': {
++                'cflags': [
++                  '<!@(<(pkg-config) --cflags xfixes)',
++                ],
++              },
++              'link_settings': {
++                'ldflags': [
++                  '<!@(<(pkg-config) --libs-only-L --libs-only-other xfixes)',
++                ],
++                'libraries': [
++                  '<!@(<(pkg-config) --libs-only-l xfixes)',
++                ],
++              },
++            }],
++          ],
+         }],
+       ],
+     },
+@@ -865,34 +877,38 @@
+       'type': 'none',
+       'toolsets': ['host', 'target'],
+       'conditions': [
+-        ['_toolset=="target"', {
+-          'direct_dependent_settings': {
+-            'cflags': [
+-              '<!@(<(pkg-config) --cflags xrandr)',
+-            ],
+-          },
+-          'link_settings': {
+-            'ldflags': [
+-              '<!@(<(pkg-config) --libs-only-L --libs-only-other xrandr)',
+-            ],
+-            'libraries': [
+-              '<!@(<(pkg-config) --libs-only-l xrandr)',
+-            ],
+-          },
+-        }, {
+-          'direct_dependent_settings': {
+-            'cflags': [
+-              '<!@(pkg-config --cflags xrandr)',
+-            ],
+-          },
+-          'link_settings': {
+-            'ldflags': [
+-              '<!@(pkg-config --libs-only-L --libs-only-other xrandr)',
+-            ],
+-            'libraries': [
+-              '<!@(pkg-config --libs-only-l xrandr)',
+-            ],
+-          },
++        ['use_x11==1', {
++          'conditions': [
++            ['_toolset=="target" and qt_os!="embedded_linux"', {
++              'direct_dependent_settings': {
++                'cflags': [
++                  '<!@(<(pkg-config) --cflags xrandr)',
++                ],
++              },
++              'link_settings': {
++                'ldflags': [
++                  '<!@(<(pkg-config) --libs-only-L --libs-only-other xrandr)',
++                ],
++                'libraries': [
++                  '<!@(<(pkg-config) --libs-only-l xrandr)',
++                ],
++              },
++            }, {
++              'direct_dependent_settings': {
++                'cflags': [
++                  '<!@(pkg-config --cflags xrandr)',
++                ],
++              },
++              'link_settings': {
++                'ldflags': [
++                  '<!@(pkg-config --libs-only-L --libs-only-other xrandr)',
++                ],
++                'libraries': [
++                  '<!@(pkg-config --libs-only-l xrandr)',
++                ],
++              },
++            }],
++          ],
+         }],
+       ],
+     },
