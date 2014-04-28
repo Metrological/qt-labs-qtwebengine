@@ -167,8 +167,8 @@ def initSnapshot():
     snapshot.initialize()
 
 os.chdir(qtwebengine_root)
-addGerritRemote()
-installGitHooks()
+#addGerritRemote()
+#installGitHooks()
 
 print 'Configuring git to ignore all submodules. Submodule changes will not show up in "git diff"!'
 subprocess.call(['git', 'config', 'diff.ignoreSubmodules', 'all'])
